@@ -40,7 +40,9 @@ class TitleFragment : Fragment() {
                 // From TitleFragmentDirections
                 // We will have to switch this to using an anonymous function, since
                 // createNavigateOnClickListener cannot take NavDirections
-                Navigation.createNavigateOnClickListener(R.id.action_titleFragment_to_gameFragment))
+                ) {view: View ->
+            view.findNavController().navigate(TitleFragmentDirections.actionTitleFragmentToGameFragment())
+        }
         setHasOptionsMenu(true)
         return binding.root
     }
