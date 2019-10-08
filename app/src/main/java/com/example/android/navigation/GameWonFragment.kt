@@ -52,9 +52,35 @@ class GameWonFragment : Fragment() {
                 Toast.LENGTH_LONG).show()
         // TODO (01) Add setHasOptionsMenu(true)
         // This allows onCreateOptionsMenu to be called
+        setHasOptionsMenu(true)
         return binding.root
     }
 
+    private fun getShareIntent(): Intent {
+        val args = GameWonFragmentArgs.fromBundle(arguments!!)
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, getString(R.string.share_success_text, args.numCorrect, args.numQuestions))
+        return shareIntent
+    }
+
+    private fun shareSuccess() {
+        startActivity(getShareIntent())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.winner_menu, menu)
+        if (null == getShareIntent().resolveActivity(activity!!.packageManager)) {
+            menu?.findItem(R.id.share)?.setVisible(false)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.share -> shareSuccess()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     // TODO (02) Create getShareIntent method
     // TODO (03) Create shareSuccess method
